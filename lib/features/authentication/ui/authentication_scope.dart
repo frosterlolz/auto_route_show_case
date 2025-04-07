@@ -13,21 +13,17 @@ class AuthenticationScope extends StatefulWidget {
   final AuthenticationService _authenticationService;
   final Widget child;
 
+  static _AuthenticationScopeInherited? _maybeOf(BuildContext context, {bool listen = true}) => listen
+      ? context.dependOnInheritedWidgetOfExactType<_AuthenticationScopeInherited>()
+      : context.getInheritedWidgetOfExactType<_AuthenticationScopeInherited>();
+
   /// Get the [AuthenticationService] instance.
-  static AuthenticationService of(BuildContext context, {bool listen = true}) {
-    final settingsScope = listen
-        ? context.dependOnInheritedWidgetOfExactType<_AuthenticationScopeInherited>()
-        : context.getInheritedWidgetOfExactType<_AuthenticationScopeInherited>();
-    return settingsScope!.state._authenticationService;
-  }
+  static AuthenticationService of(BuildContext context, {bool listen = true}) =>
+      _maybeOf(context, listen: listen)!.state._authenticationService;
 
   /// Get [isAuthenticated] bool value.
-  static bool authenticatedOf(BuildContext context, {bool listen = true}) {
-    final settingsScope = listen
-        ? context.dependOnInheritedWidgetOfExactType<_AuthenticationScopeInherited>()
-        : context.getInheritedWidgetOfExactType<_AuthenticationScopeInherited>();
-    return settingsScope!.state._authenticationService.isAuthenticated;
-  }
+  static bool authenticatedOf(BuildContext context, {bool listen = true}) =>
+      _maybeOf(context, listen: listen)!.state._authenticationService.isAuthenticated;
 
   @override
   State<AuthenticationScope> createState() => _AuthenticationScopeState();
